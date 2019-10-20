@@ -1,8 +1,9 @@
 const child = require("child_process");
 const fs = require("fs");
 
+const latestTag = child.execSync('git describe --long').toString('utf-8').split('-')[0];
 const output = child
-  .execSync(`git log --format=%B%H----DELIMITER----`)
+  .execSync(`git log ${latestTag}..HEAD --format=%B%H----DELIMITER----`)
   .toString("utf-8");
 
 const commitsArray = output
@@ -65,3 +66,13 @@ if (chores.length) {
 
 // prepend the newChangelog to the current one
 fs.writeFileSync("./CHANGELOG.md", `${newChangelog}${currentChangelog}`);
+
+// update package.json
+fs.writeFileSync("./package.json", JSON.stringify({ version: String(newVersion) }, null, 2));
+
+// create a new commit
+child.execSync('git add .');
+child.execSync(`git commit -m "chore: Bump to version ${newVersion}"`);
+
+// tag the commit
+child.execSync(`git tag -a -m "Tag for version ${newVersion}" version${newVersion}`);

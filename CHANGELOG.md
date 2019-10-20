@@ -1,3 +1,8 @@
+# Version 4 (2019-10-20)
+
+## Features
+* Add some texts to dummy.txt ([5f7b84](https://github.com/jackyef/changelog-generator/commit/5f7b841665e83d5babf27c682716b2a7546605e9))
+
 # Version 3 (2019-10-20)
 
 ## Features
